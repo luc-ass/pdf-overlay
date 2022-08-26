@@ -1,0 +1,6 @@
+venv
+./Briefkopf/*
+./Dokumente/*
+./PDF/*
+__pycache__
+.idea

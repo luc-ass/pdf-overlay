@@ -26,14 +26,13 @@ print(content_files)
 # iterate files and merge
 for content_file in content_files:
     
-    doc1 = fitz.open(STATIONARY)
-    doc2 = fitz.open(content_file)
+    doc1 = fitz.open(content_file)
+    doc2 = fitz.open(STATIONARY)
 
-    for i in range(doc1.page_count):
-        page = doc1.load_page(i)
-        page_front = fitz.open()
-        page_front.insert_pdf(doc2, from_page=i, to_page=i)
-        page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=True, oc=0, rotate=0, clip=None)
+    page = doc1.load_page(0)
+    page_front = fitz.open()
+    page_front.insert_pdf(doc2, from_page=0, to_page=0)
+    page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=True, oc=0, rotate=0, clip=None)
 
     
     # does not work with subdirectories, need to be created first or use flat file structure
