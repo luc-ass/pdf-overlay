@@ -5,24 +5,22 @@ on:
     types: [published]
     tags:
         - 'v*'
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron: '30 4 * * 5'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Package Application
+    - 
+      name: Checkout
+      uses: actions/checkout@v2
+    - 
+      name: Package Application
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: ./
-
-    - uses: actions/upload-artifact@v2
+    - 
+      name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
         name: main.exe
         path: ./
