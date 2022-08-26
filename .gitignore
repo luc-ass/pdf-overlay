@@ -1,6 +1,6 @@
 venv
-./Briefkopf/*
-./Dokumente/*
-./PDF/*
+Briefkopf/*
+Dokumente/*
+PDF/*
 __pycache__
 .idea
