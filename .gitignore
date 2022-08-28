@@ -4,3 +4,5 @@ Dokumente/*
 PDF/*
 __pycache__
 .idea
+build
+dist

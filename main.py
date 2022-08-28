@@ -11,15 +11,17 @@
         `brew install swig`
 """
 import fitz
-import glob
+import os
+
 
 # configure the path to your stationary
-STATIONARY =    "./Briefkopf/Briefkopf.pdf"
-DOC_FOLDER =    "./Dokumente/"
-OUTPUT_FOLDER = "./PDF/"
+STATIONARY =    "Briefkopf/Briefkopf.pdf"
+DOC_FOLDER =    "Dokumente/"
+OUTPUT_FOLDER = "PDF/"
+
 
 # retrieve all *.pdf files from DOC_FOLDER and subdirecories
-content_files = glob.glob(DOC_FOLDER+"**/*.pdf" , recursive=True)
+content_files = [file.path for file in os.scandir(DOC_FOLDER) if file.name.endswith(".pdf")]
 
 print(content_files)
 
@@ -28,7 +30,6 @@ for content_file in content_files:
     
     doc1 = fitz.open(content_file)
     doc2 = fitz.open(STATIONARY)
-
     page = doc1.load_page(0)
     page_front = fitz.open()
     page_front.insert_pdf(doc2, from_page=0, to_page=0)
@@ -41,3 +42,4 @@ for content_file in content_files:
     result_file = content_file.replace(DOC_FOLDER, OUTPUT_FOLDER)
 
     doc1.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
+
