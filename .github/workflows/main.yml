@@ -28,6 +28,8 @@ jobs:
       name: Get release info
       id: latest_release_info
       uses: jossef/action-latest-release-info@v1.1.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     -
       name: Upload artifact to github release page
       id: upload-release-asset
