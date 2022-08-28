@@ -25,11 +25,11 @@ output_dirs = [OUTPUT_FOLDER] # add base dir to list
 
 # retrieve all *.pdf files and directories/subdirectories from DOC_FOLDER
 for root, dirs, files in os.walk(DOC_FOLDER):
+    for name in dirs:
+        output_dirs.append(str.replace(os.path.join(root, name), DOC_FOLDER, OUTPUT_FOLDER))
     for name in files:
         if name.lower().endswith(".pdf"):
             content_files.append(os.path.join(root, name))
-    for name in dirs:
-        output_dirs.append(str.replace(os.path.join(root, name), DOC_FOLDER, OUTPUT_FOLDER))
 
 print(content_files)
 print(output_dirs)
