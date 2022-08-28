@@ -38,6 +38,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.latest_release_info.outputs.upload_url }}
-        asset_path: ./pdf-overlay.exe
+        asset_path: pdf-overlay.exe
         asset_name: pdf-overlay.exe
         asset_content_type: application/vnd.microsoft.portable-executable
