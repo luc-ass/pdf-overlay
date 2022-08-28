@@ -48,7 +48,7 @@ for content_file in content_files:
     page = cont.load_page(0)
     page_front = fitz.open()
     page_front.insert_pdf(stat, from_page=0, to_page=0)
-    page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=True, oc=0, rotate=0, clip=None)
+    page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=False, oc=0, rotate=0, clip=None)
 
     # output file name and dir
     result_file = content_file.replace(DOC_FOLDER, OUTPUT_FOLDER)
