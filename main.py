@@ -28,12 +28,12 @@ print(content_files)
 # iterate files and merge
 for content_file in content_files:
     
-    doc1 = fitz.open(content_file)
-    doc2 = fitz.open(STATIONARY)
+    cont = fitz.open(content_file)
+    stat = fitz.open(STATIONARY)
 
-    page = doc1.load_page(0)
+    page = cont.load_page(0)
     page_front = fitz.open()
-    page_front.insert_pdf(doc2, from_page=0, to_page=0)
+    page_front.insert_pdf(stat, from_page=0, to_page=0)
     page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=True, oc=0, rotate=0, clip=None)
 
     # output file name and dir
@@ -43,4 +43,4 @@ for content_file in content_files:
     if not os.path.exists(OUTPUT_FOLDER):
         os.mkdir(OUTPUT_FOLDER)
 
-    doc1.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
+    cont.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
