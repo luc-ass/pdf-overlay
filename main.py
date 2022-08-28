@@ -20,26 +20,37 @@ DOC_FOLDER =    "Dokumente/"
 OUTPUT_FOLDER = "PDF/"
 
 
-# retrieve all *.pdf files from DOC_FOLDER and subdirecories
-content_files = [file.path for file in os.scandir(DOC_FOLDER) if file.name.endswith(".pdf")]
+content_files = []
+output_dirs = [OUTPUT_FOLDER] # add base dir to list
+
+# retrieve all *.pdf files and directories/subdirectories from DOC_FOLDER
+for root, dirs, files in os.walk(DOC_FOLDER):
+    for name in dirs:
+        output_dirs.append(str.replace(os.path.join(root, name), DOC_FOLDER, OUTPUT_FOLDER))
+    for name in files:
+        if name.lower().endswith(".pdf"):
+            content_files.append(os.path.join(root, name))
 
 print(content_files)
+print(output_dirs)
+
+# create missing folders from list
+for directory in output_dirs:
+    if not os.path.exists(directory):
+        os.mkdir(directory)
 
 # iterate files and merge
 for content_file in content_files:
     
-    doc1 = fitz.open(content_file)
-    doc2 = fitz.open(STATIONARY)
-    page = doc1.load_page(0)
-    page_front = fitz.open()
-    page_front.insert_pdf(doc2, from_page=0, to_page=0)
-    page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=True, oc=0, rotate=0, clip=None)
+    cont = fitz.open(content_file)
+    stat = fitz.open(STATIONARY)
 
-    
-    # does not work with subdirectories, need to be created first or use flat file structure
+    page = cont.load_page(0)
+    page_front = fitz.open()
+    page_front.insert_pdf(stat, from_page=0, to_page=0)
+    page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=False, oc=0, rotate=0, clip=None)
 
     # output file name and dir
     result_file = content_file.replace(DOC_FOLDER, OUTPUT_FOLDER)
 
-    doc1.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
-
+    cont.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
