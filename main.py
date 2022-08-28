@@ -30,16 +30,17 @@ for content_file in content_files:
     
     doc1 = fitz.open(content_file)
     doc2 = fitz.open(STATIONARY)
+
     page = doc1.load_page(0)
     page_front = fitz.open()
     page_front.insert_pdf(doc2, from_page=0, to_page=0)
     page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=True, oc=0, rotate=0, clip=None)
 
-    
-    # does not work with subdirectories, need to be created first or use flat file structure
-
     # output file name and dir
     result_file = content_file.replace(DOC_FOLDER, OUTPUT_FOLDER)
+    
+    # create output directory if not exists
+    if not os.path.exists(OUTPUT_FOLDER):
+        os.mkdir(OUTPUT_FOLDER)
 
     doc1.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
-
