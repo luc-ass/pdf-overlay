@@ -20,10 +20,24 @@ DOC_FOLDER =    "Dokumente/"
 OUTPUT_FOLDER = "PDF/"
 
 
-# retrieve all *.pdf files from DOC_FOLDER and subdirecories
-content_files = [file.path for file in os.scandir(DOC_FOLDER) if file.name.endswith(".pdf")]
+content_files = []
+output_dirs = [OUTPUT_FOLDER] # add base dir to list
+
+# retrieve all *.pdf files and directories/subdirectories from DOC_FOLDER
+for root, dirs, files in os.walk(DOC_FOLDER):
+    for name in files:
+        if name.lower().endswith(".pdf"):
+            content_files.append(os.path.join(root, name))
+    for name in dirs:
+        output_dirs.append(str.replace(os.path.join(root, name), DOC_FOLDER, OUTPUT_FOLDER))
 
 print(content_files)
+print(output_dirs)
+
+# create missing folders from list
+for directory in output_dirs:
+    if not os.path.exists(directory):
+        os.mkdir(directory)
 
 # iterate files and merge
 for content_file in content_files:
@@ -38,9 +52,5 @@ for content_file in content_files:
 
     # output file name and dir
     result_file = content_file.replace(DOC_FOLDER, OUTPUT_FOLDER)
-    
-    # create output directory if not exists
-    if not os.path.exists(OUTPUT_FOLDER):
-        os.mkdir(OUTPUT_FOLDER)
 
     cont.save(result_file, encryption=fitz.PDF_ENCRYPT_KEEP)
