@@ -19,8 +19,9 @@ def convert_to_pdf(doc_folder: str) -> None:
     input_file_list = [file.path for file in scantree(doc_folder) if file.name.lower().endswith(".docx")]
     file_list = [(file_path, file_path.replace("docx", "pdf")) for file_path in input_file_list]
 
+    word = comtypes.client.CreateObject("Word.Application")
+
     for input_file, output_file in file_list:
-        word = comtypes.client.CreateObject("Word.Application")
         doc = word.Documents.Open(input_file)
         doc.SaveAs(output_file, FileFormat=word_PDF_format)
         doc.Close()
