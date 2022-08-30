@@ -15,13 +15,18 @@ def scantree(path):
             yield entry
 
 
-input_file_list = [file.path for file in scantree(DOC_FOLDER) if file.name.lower().endswith(".docx")]
-file_list = [(file_path, file_path.replace("docx", "pdf")) for file_path in input_file_list]
+def convert_to_pdf(doc_folder: str) -> None:
+    input_file_list = [file.path for file in scantree(doc_folder) if file.name.lower().endswith(".docx")]
+    file_list = [(file_path, file_path.replace("docx", "pdf")) for file_path in input_file_list]
 
-for input_file, output_file in file_list:
-    word = comtypes.client.CreateObject("Word.Application")
-    doc = word.Documents.Open(input_file)
-    doc.SaveAs(output_file, FileFormat=word_PDF_format)
-    doc.Close()
+    for input_file, output_file in file_list:
+        word = comtypes.client.CreateObject("Word.Application")
+        doc = word.Documents.Open(input_file)
+        doc.SaveAs(output_file, FileFormat=word_PDF_format)
+        doc.Close()
 
-word.Quit()
+    word.Quit()
+
+
+if __name__ == "__main__":
+    convert_to_pdf(DOC_FOLDER)
