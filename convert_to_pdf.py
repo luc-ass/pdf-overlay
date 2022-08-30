@@ -20,6 +20,7 @@ def convert_to_pdf(doc_folder: str) -> None:
     file_list = [(file_path, file_path.replace("docx", "pdf")) for file_path in input_file_list]
 
     word = comtypes.client.CreateObject("Word.Application")
+    word.Visible = False
 
     for input_file, output_file in file_list:
         doc = word.Documents.Open(input_file)
