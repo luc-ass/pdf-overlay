@@ -16,7 +16,7 @@ def scantree(path):
 
 
 def convert_to_pdf(doc_folder: str) -> None:
-    input_file_list = [file.path for file in scantree(doc_folder) if file.name.lower().endswith(".docx")]
+    input_file_list = [file.path for file in scantree(doc_folder) if file.name.endswith(".docx")]
     file_list = [(file_path, file_path.replace("docx", "pdf")) for file_path in input_file_list]
 
     word = comtypes.client.CreateObject("Word.Application")
