@@ -1,23 +1,15 @@
 import comtypes.client
 import os
+import pathlib
 
 word_PDF_format = 17
 
-DOC_FOLDER = "Dokumente/"
-
-
-def scantree(path):
-    """Recursively yield DirEntry objects for given directory."""
-    for entry in os.scandir(path):
-        if entry.is_dir(follow_symlinks=False):
-            yield from scantree(entry.path)
-        else:
-            yield entry
+DOC_FOLDER = "./Dokumente/"
 
 
 def convert_to_pdf(doc_folder: str) -> None:
-    input_file_list = [file.path for file in scantree(doc_folder) if file.name.endswith(".docx")]
-    file_list = [(file_path, file_path.replace("docx", "pdf")) for file_path in input_file_list]
+    input_file_list = [path.absolute() for path in pathlib.Path(doc_folder).glob('**/*.docx')]
+    file_list = [(str(file_path), str(file_path).replace("docx", "pdf")) for file_path in input_file_list]
 
     word = comtypes.client.CreateObject("Word.Application")
     word.Visible = False
