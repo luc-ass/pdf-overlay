@@ -8,8 +8,7 @@ DOC_FOLDER = "./Dokumente/"
 
 
 def convert_to_pdf(doc_folder: str) -> None:
-    input_file_list = [path.absolute() for path in pathlib.Path(doc_folder).glob('**/*.docx')]
-    file_list = [(str(file_path), str(file_path).replace("docx", "pdf")) for file_path in input_file_list]
+    file_list = [(str(file_path.absolute()), str(file_path.absolute()).replace("docx", "pdf")) for file_path in pathlib.Path(doc_folder).glob('**/*.docx')]
 
     word = comtypes.client.CreateObject("Word.Application")
     word.Visible = False
