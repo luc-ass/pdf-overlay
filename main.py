@@ -12,13 +12,14 @@
 """
 import fitz
 from pathlib import Path
+import re
 
 # configure the path to your stationary
 STATIONARY =    "Briefkopf/Briefkopf.pdf"
 BACKSIDE_CT =   "Briefkopf/CT_Rückseite.pdf"
 BACKSIDE_MRT =  "Briefkopf/MRT_Rückseite.pdf"
-DOC_FOLDER =    "Dokumente/"
-OUTPUT_FOLDER = "PDF/"
+DOC_FOLDER =    "Dokumente"
+OUTPUT_FOLDER = "PDF"
 
 content_files = [(path, Path(str(path).replace(DOC_FOLDER, OUTPUT_FOLDER))) for path in Path(DOC_FOLDER).glob("**/*.pdf")]
 
@@ -37,11 +38,11 @@ for input_path, output_path in content_files:
     page_front.insert_pdf(stat, from_page=0, to_page=0)
     page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=False, oc=0, rotate=0, clip=None)
 
-    # check if files need 2nd page. Needs workaround with byte-decoding because pathlib uses
-    # different byte decoding of umlaut than python strings
-    if input_path.stem.startswith(b'Aufkla\xcc\x88rung_CT'.decode()):
-        cont.insert_pdf(backside_CT)
-    elif input_path.stem.startswith(b'Aufkla\xcc\x88rung_MRT'.decode()):
-        cont.insert_pdf(backside_MRT)
+    # only add second page if not already exists
+    if cont.page_count == 1:
+        if re.match(r"^Aufkl.rung_CT", input_path.stem):
+            cont.insert_pdf(backside_CT)
+        elif re.match(r"^Aufkl.rung_MRT", input_path.stem):
+            cont.insert_pdf(backside_MRT)
 
     cont.save(output_path, encryption=fitz.PDF_ENCRYPT_KEEP)
