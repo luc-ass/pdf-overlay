@@ -13,6 +13,7 @@
 import fitz
 from pathlib import Path
 import re
+from convert_to_pdf import convert_to_pdf
 
 # configure the path to your stationary
 STATIONARY =    "Briefkopf/Briefkopf.pdf"
@@ -20,6 +21,9 @@ BACKSIDE_CT =   "Briefkopf/CT_Rückseite.pdf"
 BACKSIDE_MRT =  "Briefkopf/MRT_Rückseite.pdf"
 DOC_FOLDER =    "Dokumente"
 OUTPUT_FOLDER = "PDF"
+
+# convert .docx files in DOC_FOLDER to .pdf
+convert_to_pdf(DOC_FOLDER)
 
 content_files = [(path, Path(str(path).replace(DOC_FOLDER, OUTPUT_FOLDER))) for path in Path(DOC_FOLDER).glob("**/*.pdf")]
 
