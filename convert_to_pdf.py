@@ -1,4 +1,4 @@
-#import comtypes.client
+import comtypes.client
 import os
 import pathlib
 
