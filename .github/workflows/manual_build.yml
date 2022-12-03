@@ -14,10 +14,10 @@ jobs:
      name: Compile exe
      uses: JackMcKew/pyinstaller-action-windows@main
      with:
-       path: ./dist/windows
+       path: ./
    -
      name: Upload artifact to workflow
      uses: actions/upload-artifact@v3
      with:
        name: pdf-overlay.exe
-       path: ./
+       path: ./dist/windows
