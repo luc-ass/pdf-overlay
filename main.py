@@ -16,12 +16,12 @@ import re
 from convert_to_pdf import convert_to_pdf
 
 # configure the path to your stationary
-STATIONARY =    "Briefkopf/Briefkopf.pdf"
-BACKSIDE_CT =   "Briefkopf/CT_Rückseite.pdf"
-BACKSIDE_MRT =  "Briefkopf/MRT_Rückseite.pdf"
+STATIONARY =      "Briefkopf/Briefkopf.pdf"
+BACKSIDE_CT =     "Briefkopf/CT_Rückseite.pdf"
+BACKSIDE_MRT =    "Briefkopf/MRT_Rückseite.pdf"
 HEADER_HERZBILD = "Briefkopf/Briefkopf_Herzbild.pdf"
-DOC_FOLDER =    "Dokumente"
-OUTPUT_FOLDER = "PDF"
+DOC_FOLDER =      "Dokumente"
+OUTPUT_FOLDER =   "PDF"
 
 # convert .docx files in DOC_FOLDER to .pdf
 convert_to_pdf(DOC_FOLDER)
