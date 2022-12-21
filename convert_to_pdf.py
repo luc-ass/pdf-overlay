@@ -16,20 +16,27 @@ def convert_to_pdf(doc_folder: str) -> None:
     word.Visible = False
 
     curr_files = {}
-    file_db_exists = os.path.exists(f"{doc_folder}/file_hashes.json")
+    file_db_exists = os.path.exists(f"file_hashes.json")
     if file_db_exists:
         with open("file_hashes.json", "r") as file:
             _prev_files = json.load(file)
+        print(_prev_files)
+    print(f"db file exists: {file_db_exists}")
 
     for input_file, output_file in file_list:
+        print(f"Processing {input_file}")
         checksum = hashlib.md5(open(input_file, "rb").read()).hexdigest()
-        curr_files[input_file] = checksum
         if file_db_exists and os.path.exists(output_file):
             if _prev_files[input_file] == checksum:
+                print(f"{input_file} has not changed (Checksum {checksum}). Skipping.")
+                curr_files[input_file] = checksum
                 continue
         doc = word.Documents.Open(input_file)
         doc.SaveAs(output_file, FileFormat=word_PDF_format)
         doc.Close()
+        checksum2 = hashlib.md5(open(input_file, "rb").read()).hexdigest()
+        print(f"comparing {checksum}, after open: {checksum2}")
+        curr_files[input_file] = checksum2
 
     word.Quit()
 
