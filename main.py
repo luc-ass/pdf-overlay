@@ -28,7 +28,7 @@ convert_to_pdf(DOC_FOLDER)
 
 content_files = [(path, Path(str(path).replace(DOC_FOLDER, OUTPUT_FOLDER))) for path in Path(DOC_FOLDER).glob("**/*.pdf")]
 
-stat = fitz.open(STATIONARY)
+header_normal = fitz.open(STATIONARY)
 backside_CT = fitz.open(BACKSIDE_CT)
 backside_MRT = fitz.open(BACKSIDE_MRT)
 header_herzbild = fitz.open(HEADER_HERZBILD)
@@ -41,9 +41,11 @@ for input_path, output_path in content_files:
 
     page = cont.load_page(0)
     page_front = fitz.open()
-    if re.match(".*HerzBild", input_path.stem):
-        stat = header_herzbild
-    page_front.insert_pdf(stat, from_page=0, to_page=0)
+    if re.search("HerzBild", input_path.stem) is not None:
+        header = header_herzbild
+    else:
+        header = header_normal
+    page_front.insert_pdf(header, from_page=0, to_page=0)
     page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=False, oc=0, rotate=0, clip=None)
 
     # only add second page if not already exists
