@@ -20,11 +20,13 @@ STATIONARY =      "Briefkopf/Briefkopf.pdf"
 BACKSIDE_CT =     "Briefkopf/CT_Rückseite.pdf"
 BACKSIDE_MRT =    "Briefkopf/MRT_Rückseite.pdf"
 HEADER_HERZBILD = "Briefkopf/Briefkopf_Herzbild.pdf"
+HEADER_MEDICUM =  "Briefkopf/Briefkopf_Medicum.pdf"
 DOC_FOLDER =      "Dokumente"
 OUTPUT_FOLDER =   "PDF"
 
+# Commented out because Microsoft Word is not installed on the server anymore
 # convert .docx files in DOC_FOLDER to .pdf
-convert_to_pdf(DOC_FOLDER)
+#convert_to_pdf(DOC_FOLDER)
 
 content_files = [(path, Path(str(path).replace(DOC_FOLDER, OUTPUT_FOLDER))) for path in Path(DOC_FOLDER).glob("**/*.pdf")]
 
@@ -32,6 +34,7 @@ header_normal = fitz.open(STATIONARY)
 backside_CT = fitz.open(BACKSIDE_CT)
 backside_MRT = fitz.open(BACKSIDE_MRT)
 header_herzbild = fitz.open(HEADER_HERZBILD)
+header_medicum = fitz.open(HEADER_MEDICUM)
 
 # iterate files and merge
 for input_path, output_path in content_files:
@@ -43,10 +46,14 @@ for input_path, output_path in content_files:
     page_front = fitz.open()
     if re.search("HerzBild", input_path.stem) is not None:
         header = header_herzbild
+    elif re.search("Medicum", input_path.stem) is not None:
+        header = header_medicum
     else:
         header = header_normal
+
     page_front.insert_pdf(header, from_page=0, to_page=0)
     page.show_pdf_page(page.rect, page_front, pno=0, keep_proportion=True, overlay=False, oc=0, rotate=0, clip=None)
+    
 
     # only add second page if not already exists
     if cont.page_count == 1:
